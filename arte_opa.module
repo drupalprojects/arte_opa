@@ -1,0 +1,90 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function arte_opa_menu() {
+  $items['admin/config/services/opa'] = array(
+    'title' => 'ARTE Open API',
+    'page callback' => 'arte_opa_query_page',
+    'access arguments' => array('query opa'),
+    'file' => 'arte_opa.admin.inc',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['admin/config/services/opa/query'] = array(
+    'title' => 'ARTE Open API',
+    'page callback' => 'arte_opa_settings',
+    'access arguments' => array('query opa'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'file' => 'arte_opa.admin.inc',
+    'weight' => -20,
+  );
+  $items['admin/config/services/opa/config'] = array(
+    'title' => 'Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('arte_opa_admin_settings'),
+    'access arguments' => array('administer opa'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'arte_opa.admin.inc',
+    'weight' => -15,
+  );
+  return $items;
+}
+
+/**
+ * Debug callback to check the connection with OPA.
+ *
+ * @return [type] [description]
+ */
+function arte_opa_reports() {
+  $opa = arte_opa_get_api();
+  $opa->setDebug();
+
+
+
+  $reader = new OPAVideosReader($opa, array(
+    // 'language' => 'fr',
+    // 'channel' => 'FR',
+    'platform' => 'CINEMA,ARTEPLUS7',
+    'genrePresseCode' => '0,5,6,7',
+    // 'platform' => 'ALW',
+    // 'emNumber' => '051939-004',
+    // 'language' => 'en',
+    // 'limit' => 10 ,
+    'limit' => 10,
+  ));
+
+  $headers = array('emNumber', 'title', 'language', 'platform', 'creationDate');
+  $data = array();
+
+  foreach ($reader as $key => $value) {
+    $row = array();
+    foreach ($headers as $header) {
+      $row[] = $value[$header];
+    }
+    $data[] = $row;
+  }
+
+  return theme_table(array(
+    'header' => $headers,
+    'rows' => $data,
+    'attributes' => array('class' => array('opa')),
+    'caption' => 'From OPA. Showing ' . count($data) . ' results',
+    'colgroups' => array(),
+    'sticky' => FALSE,
+    'empty' => 'No results found',
+  ));
+}
+
+/**
+ * Wrapper around the API constructor
+ *
+ * @return OPA
+ *   Returns an OPA class object.
+ */
+function arte_opa_get_api() {
+  return new OPA(
+    variable_get('arte_opa_client_id', ''),
+    variable_get('arte_opa_client_secret', '')
+  );
+}
