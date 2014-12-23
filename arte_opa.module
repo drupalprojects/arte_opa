@@ -32,51 +32,6 @@ function arte_opa_menu() {
 }
 
 /**
- * Debug callback to check the connection with OPA.
- *
- * @return [type] [description]
- */
-function arte_opa_reports() {
-  $opa = arte_opa_get_api();
-  $opa->setDebug();
-
-
-
-  $reader = new OPAVideosReader($opa, array(
-    // 'language' => 'fr',
-    // 'channel' => 'FR',
-    'platform' => 'CINEMA,ARTEPLUS7',
-    'genrePresseCode' => '0,5,6,7',
-    // 'platform' => 'ALW',
-    // 'emNumber' => '051939-004',
-    // 'language' => 'en',
-    // 'limit' => 10 ,
-    'limit' => 10,
-  ));
-
-  $headers = array('emNumber', 'title', 'language', 'platform', 'creationDate');
-  $data = array();
-
-  foreach ($reader as $key => $value) {
-    $row = array();
-    foreach ($headers as $header) {
-      $row[] = $value[$header];
-    }
-    $data[] = $row;
-  }
-
-  return theme_table(array(
-    'header' => $headers,
-    'rows' => $data,
-    'attributes' => array('class' => array('opa')),
-    'caption' => 'From OPA. Showing ' . count($data) . ' results',
-    'colgroups' => array(),
-    'sticky' => FALSE,
-    'empty' => 'No results found',
-  ));
-}
-
-/**
  * Wrapper around the API constructor
  *
  * @return OPA
