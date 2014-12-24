@@ -206,7 +206,8 @@ function _arte_opa_query_table() {
       'limit' => 10,
       'kind' => 'SHOW',
     );
-  } else {
+  }
+  else {
     // Do not pass the "all" option
     foreach ($query as $var => $val) {
       if ($val == 'all') {

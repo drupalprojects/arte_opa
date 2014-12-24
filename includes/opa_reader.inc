@@ -17,7 +17,7 @@ class OPAReader implements Iterator, Countable {
   protected $data = array();
 
   // The result set limit (no limit by default)
-  protected $limit = null;
+  protected $limit = NULL;
 
   // The paging limit, we take the same as the maximum allowed by OPA
   protected $pagination_limit = 50;
@@ -157,10 +157,11 @@ class OPAReader implements Iterator, Countable {
       // We are done!
       $this->currentElement = NULL;
     }
-    else if (isset($this->data[$this->resource][$this->position])) {
+    elseif (isset($this->data[$this->resource][$this->position])) {
       $this->currentElement = $this->data[$this->resource][$this->position];
       $this->currentId = $this->currentElement['id'];
-    } else {
+    }
+    else {
       // Check if we need to advance the pagination
       if ($pagination && $this->page < $this->data['meta']['videos']['pages']) {
         // Yes, and we have pages available still, so increment page and reset data to fetch the next page
