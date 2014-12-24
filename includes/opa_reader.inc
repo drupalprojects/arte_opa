@@ -162,7 +162,7 @@ class OPAReader implements Iterator, Countable {
     }
     else {
       // Check if we need to advance the pagination
-      if ($pagination && $this->page < $this->data['meta']['videos']['pages']) {
+      if (isset($this->data['meta']['videos']['pages']) && $pagination && $this->page < $this->data['meta']['videos']['pages']) {
         // Yes, and we have pages available still, so increment page and reset data to fetch the next page
         $this->page++;
         $this->position = -1;
