@@ -5,4 +5,3 @@ core = 7.x
 configure = admin/config/opa
 files[] = includes/opa.inc
 files[] = includes/opa_reader.inc
-

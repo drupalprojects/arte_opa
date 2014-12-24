@@ -5,7 +5,6 @@
  * OPA reader
  */
 
-
 /**
  * An iterator over an OPA remote resource.
  *
@@ -237,14 +236,5 @@ class OPAVideosReader extends OPAReader {
   public function __construct($opa, $params) {
     parent::__construct($opa, $params, 'id', 'videos');
   }
-
-  // public function key() {
-  //   if (!empty($this->currentElement)) {
-  //     $emNumber = $this->currentElement['emNumber'];
-  //     $type = $this->currentElement['type'];
-  //     return $emNumber . '_' . $type;
-  //   }
-  //   return parent::key();
-  // }
 
 }
