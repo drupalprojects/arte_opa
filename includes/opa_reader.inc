@@ -89,7 +89,7 @@ class OPAReader implements Iterator, Countable {
 
   protected function fetchData() {
     if (!$this->data) {
-      $this->data = $this->opa->{$this->resource}($this->params);
+      $this->data = $this->opa->apiCall($this->resource, $this->params);
     }
   }
 
@@ -135,7 +135,7 @@ class OPAReader implements Iterator, Countable {
       $options['limit'] = $pagination ? $this->pagination_limit : $this->limit;
 
       // API method callback with pagination and limits
-      $this->data = $this->opa->{$this->resource}($options);
+      $this->data = $this->opa->apiCall($this->resource, $options);
 
       // @todo add try/catch
       if (!$this->data) {
@@ -156,8 +156,8 @@ class OPAReader implements Iterator, Countable {
       // We are done!
       $this->currentElement = NULL;
     }
-    elseif (isset($this->data[$this->resource][$this->position])) {
-      $this->currentElement = $this->data[$this->resource][$this->position];
+    elseif (isset($this->data['videos'][$this->position])) {
+      $this->currentElement = $this->data['videos'][$this->position];
       $this->currentId = $this->currentElement['id'];
     }
     else {
@@ -212,8 +212,8 @@ class OPAReader implements Iterator, Countable {
   public function count() {
     $this->fetchData();
 
-    if ($this->data && isset($this->data['meta'][$this->resource]['totalCount'])) {
-      return $this->data['meta'][$this->resource]['totalCount'];
+    if ($this->data && isset($this->data['meta']['videos']['totalCount'])) {
+      return $this->data['meta']['videos']['totalCount'];
     }
     return 0;
   }
