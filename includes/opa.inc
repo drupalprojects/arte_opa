@@ -32,10 +32,19 @@ class OPA {
    *   ARTE client ID
    * @param string $client_secret
    *   ARTE client secret
+   * @param string $token_never_expire (optional)
+   *   ARTE auth token that never expires. Can be used to skip the roundtrip to fetch
+   *   a valid token.
    */
-  public function __construct($client_id, $client_secret) {
+  public function __construct($client_id, $client_secret, $token_never_expire = FALSE) {
     $this->client_id = $client_id;
     $this->client_secret = $client_secret;
+    $this->token_never_expire = $token_never_expire;
+
+    // Set the token that should never expire.
+    if ($this->token_never_expire) {
+      $this->setAccessToken($token_never_expire);
+    }
 
     // Make configurable?
     $this->endpoint = 'https://api.arte.tv';
@@ -246,6 +255,11 @@ class OPA {
    * OAuth: request an access token.
    */
   public function requestToken() {
+    // Check if we use a never expire token; if we do, we shouldn't request a new token.
+    if ($this->token_never_expire) {
+      return TRUE;
+    }
+
     $data = drupal_http_build_query(array(
       // We are using the preferred client_credentials method. See https://github.com/ArteGEIE/API-DOC/tree/master/oauth-server#generating-an-access-token
       'grant_type' => 'client_credentials',

@@ -19,11 +19,20 @@ function arte_opa_admin_settings() {
     '#title' => t('Client ID'),
     '#default_value' => variable_get('arte_opa_client_id', ''),
     '#size' => 150,
+    '#required' => TRUE,
   );
   $form['opa']['arte_opa_client_secret'] = array(
     '#type' => 'textfield',
     '#title' => t('Client Secret'),
     '#default_value' => variable_get('arte_opa_client_secret', ''),
+    '#size' => 150,
+    '#required' => TRUE,
+  );
+  $form['opa']['arte_opa_token_never_expire'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Token (Never Expire)'),
+    '#default_value' => variable_get('arte_opa_token_never_expire', ''),
+    '#description' => 'A never expire token can be used to avoid a roundtrip to fetch a token before issueing the OPA request. <em>Warning: this is only available for ARTE partners.</em>',
     '#size' => 150,
   );
 

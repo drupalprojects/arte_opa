@@ -22,6 +22,8 @@ $conf['arte_opa_client_secret'] = 'CLIENT_SECRET';
 
 Give users the permission 'administer opa' or 'query opa' to change settings and use the query builder respectively.
 
+To avoid making roundtrips to fetch an authentication token, you can also request a "never expire token". You can then configure this in the settings page.
+
 ## Example Query Builder
 
 To demo OPA queries, the module has an interface for building OPA queries, for example to query all the videos of the CINEMA platform.

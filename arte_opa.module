@@ -40,6 +40,7 @@ function arte_opa_menu() {
 function arte_opa_get_api() {
   return new OPA(
     variable_get('arte_opa_client_id', ''),
-    variable_get('arte_opa_client_secret', '')
+    variable_get('arte_opa_client_secret', ''),
+    variable_get('arte_opa_token_never_expire', FALSE)
   );
 }
