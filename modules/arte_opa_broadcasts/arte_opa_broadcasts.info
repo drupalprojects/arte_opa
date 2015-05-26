@@ -1,0 +1,6 @@
+name = ARTE OPA Broadcasts API
+description = Provides synchronisation with the OPA Broadcasts API.
+package = ARTE Foundation
+core = 7.x
+dependencies[] = arte_opa
+files[] = includes/opa_broadcasts_reader.inc
