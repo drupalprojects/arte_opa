@@ -1,0 +1,46 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function arte_opa_menu() {
+  $items['admin/config/services/opa'] = array(
+    'title' => 'ARTE Open API',
+    'page callback' => 'arte_opa_query_page',
+    'access arguments' => array('query opa'),
+    'file' => 'arte_opa.admin.inc',
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['admin/config/services/opa/query'] = array(
+    'title' => 'ARTE Open API',
+    'page callback' => 'arte_opa_settings',
+    'access arguments' => array('query opa'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'file' => 'arte_opa.admin.inc',
+    'weight' => -20,
+  );
+  $items['admin/config/services/opa/config'] = array(
+    'title' => 'Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('arte_opa_admin_settings'),
+    'access arguments' => array('administer opa'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'arte_opa.admin.inc',
+    'weight' => -15,
+  );
+  return $items;
+}
+
+/**
+ * Wrapper around the API constructor
+ *
+ * @return OPA
+ *   Returns an OPA class object.
+ */
+function arte_opa_get_api() {
+  return new OPA(
+    variable_get('arte_opa_client_id', ''),
+    variable_get('arte_opa_client_secret', ''),
+    variable_get('arte_opa_token_never_expire', FALSE)
+  );
+}
