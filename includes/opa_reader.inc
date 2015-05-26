@@ -164,13 +164,13 @@ class OPAReader implements Iterator, Countable {
       // We are done!
       $this->currentElement = NULL;
     }
-    elseif (isset($this->data['videos'][$this->position])) {
-      $this->currentElement = $this->data['videos'][$this->position];
+    elseif (isset($this->data[$this->resource][$this->position])) {
+      $this->currentElement = $this->getData();
       $this->currentId = $this->currentElement['id'];
     }
     else {
       // Check if we need to advance the pagination
-      if (isset($this->data['meta']['videos']['pages']) && $pagination && $this->page < $this->data['meta']['videos']['pages']) {
+      if (isset($this->data['meta'][$this->resource]['pages']) && $pagination && $this->page < $this->data['meta'][$this->resource]['pages']) {
         // Yes, and we have pages available still, so increment page and reset data to fetch the next page
         $this->page++;
         $this->position = -1;
