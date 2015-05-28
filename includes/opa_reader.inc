@@ -226,6 +226,13 @@ class OPAReader implements Iterator, Countable {
     return 0;
   }
 
+  /**
+   * Gets data of the specified resource type at the current position while iterating
+   * over the result set. Also includes linked data if specified upon constructing
+   * the OPAReader object.
+   *
+   * @return Array The OPA response data.
+   */
   protected function getData() {
     $data = $this->data[$this->resource][$this->position];
 
