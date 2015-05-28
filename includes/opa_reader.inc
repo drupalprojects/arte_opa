@@ -24,6 +24,9 @@ class OPAReader implements Iterator, Countable {
   // Current page we're at
   protected $page = 1;
 
+  // Response data to include
+  protected $include = null;
+
   protected $opa;
   protected $params;
 
@@ -79,6 +82,11 @@ class OPAReader implements Iterator, Countable {
     if (isset($params['limit'])) {
       // A limit was specified
       $this->limit = $params['limit'];
+    }
+
+    if (isset($params['include'])) {
+      // Include linked data
+      $this->include = $params['include'];
     }
 
     // Initalize everything
@@ -156,13 +164,13 @@ class OPAReader implements Iterator, Countable {
       // We are done!
       $this->currentElement = NULL;
     }
-    elseif (isset($this->data['videos'][$this->position])) {
-      $this->currentElement = $this->data['videos'][$this->position];
+    elseif (isset($this->data[$this->resource][$this->position])) {
+      $this->currentElement = $this->getData();
       $this->currentId = $this->currentElement['id'];
     }
     else {
       // Check if we need to advance the pagination
-      if (isset($this->data['meta']['videos']['pages']) && $pagination && $this->page < $this->data['meta']['videos']['pages']) {
+      if (isset($this->data['meta'][$this->resource]['pages']) && $pagination && $this->page < $this->data['meta'][$this->resource]['pages']) {
         // Yes, and we have pages available still, so increment page and reset data to fetch the next page
         $this->page++;
         $this->position = -1;
@@ -212,10 +220,35 @@ class OPAReader implements Iterator, Countable {
   public function count() {
     $this->fetchData();
 
-    if ($this->data && isset($this->data['meta']['videos']['totalCount'])) {
-      return $this->data['meta']['videos']['totalCount'];
+    if ($this->data && isset($this->data['meta'][$this->resource]['totalCount'])) {
+      return $this->data['meta'][$this->resource]['totalCount'];
     }
     return 0;
+  }
+
+  /**
+   * Gets data of the specified resource type at the current position while iterating
+   * over the result set. Also includes linked data if specified upon constructing
+   * the OPAReader object.
+   *
+   * @return Array The OPA response data.
+   */
+  protected function getData() {
+    $data = $this->data[$this->resource][$this->position];
+
+    if (isset($this->include) && isset($this->data['linked']) && isset($this->data['linked'][$this->include])) {
+      // Include linked program data
+      if ($this->include == 'programs') {
+        $program_id = $data['programId'];
+        foreach ($this->data['linked']['programs'] as $program) {
+          if ($program['programId'] == $program_id) {
+            $data['program'] = $program;
+          }
+        }
+      }
+    }
+
+    return $data;
   }
 
   /**

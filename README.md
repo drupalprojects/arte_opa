@@ -3,7 +3,9 @@ ARTE OPA
 
 Defines an API that enables modules to interact with the ARTE Open API (OPA).
 
-Currently only supports retrieving data using the `videos` method, but other methods are part of the roadmap of this module.
+The module supports retrieving data using the `videos` method. To retrieve
+`broadcasts` data you need to separately enable the `arte_opa_broadcasts` module.
+More methods will be supported soon.
 
 Open API documentation can be found at https://github.com/ArteGEIE/API-DOC
 
