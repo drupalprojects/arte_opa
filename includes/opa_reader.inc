@@ -73,11 +73,12 @@ class OPAReader implements Iterator, Countable {
    * @param $id_field
    *  Name of the field within each object containing its unique ID.
    */
-  public function __construct($opa, $params, $idField, $resource) {
+  public function __construct($opa, $params, $idField, $resource, $subPath = '') {
     $this->opa = $opa;
     $this->params = $params;
     $this->idField = $idField;
     $this->resource = $resource;
+    $this->subPath = $subPath;
 
     if (isset($params['limit'])) {
       // A limit was specified
@@ -97,8 +98,16 @@ class OPAReader implements Iterator, Countable {
 
   protected function fetchData() {
     if (!$this->data) {
-      $this->data = $this->opa->apiCall($this->resource, $this->params);
+      $this->data = $this->opa->apiCall($this->resourcePath(), $this->params);
     }
+  }
+
+  protected function resourcePath() {
+    $path = $this->resource;
+    if ($this->subPath) {
+      $path .= $this->subPath;
+    }
+    return $path;
   }
 
   protected function reset() {
@@ -143,7 +152,7 @@ class OPAReader implements Iterator, Countable {
       $options['limit'] = $pagination ? $this->pagination_limit : $this->limit;
 
       // API method callback with pagination and limits
-      $this->data = $this->opa->apiCall($this->resource, $options);
+      $this->data = $this->opa->apiCall($this->resourcePath(), $options);
 
       // @todo add try/catch
       if (!$this->data) {
