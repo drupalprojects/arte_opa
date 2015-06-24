@@ -141,12 +141,13 @@ class OPA {
       $data = $data[0];
     }
 
-    if (isset($data['error'])) {
-      throw new OPAException($data['error_description'], $data['error']);
+    // Catch and rethrow any errors reported by the API
+    if (isset($data['error']) && isset($data['error_description'])) {
+      throw new OPAException($data['error_description']);
     }
 
     if (!empty($data['errorCode'])) {
-      throw new OPAException($data['message'], $this->response->code);
+      throw new OPAException($data['message']);
     }
 
     return $data;
