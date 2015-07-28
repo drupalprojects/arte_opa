@@ -60,13 +60,17 @@ function _drush_arte_opa_broadcasts_opa_broadcasts_sync($caseCodes = array(), $d
   $broadcasts = array();
   foreach ($languages as $lang) {
     // Fetch the broadcasts with program data
-    $reader = new OPABroadcastsReader($opa, array(
+    $params = array(
       'language' => $lang,
       'case.code' => implode(',', $caseCodes),
       'sort' => 'AIRDATE_ASC',
       // Include program data
       'include' => 'programs',
-    ));
+    );
+
+    drupal_alter('arte_opa_broadcasts_sync_params', $params);
+
+    $reader = new OPABroadcastsReader($opa, $params);
 
     foreach ($reader as $data) {
       $broadcasts[$data['programId']][$lang] = $data;
