@@ -36,6 +36,19 @@ function arte_opa_admin_settings() {
     '#size' => 150,
   );
 
+  $form['general'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('OPA settings'),
+    '#description' => t('General OPA settings'),
+  );
+  $form['general']['arte_opa_languages'] = array(
+    '#type' => 'checkboxes',
+    '#title' => t('Languages'),
+    '#default_value' => variable_get('arte_opa_languages', array()),
+    '#options' => drupal_map_assoc(arte_opa_supported_languages()),
+    '#description' => t('Select the languages that will be used to query OPA. If your site is in two languages (e.g. French and German), you would select both of these languages.'),
+  );
+
   return system_settings_form($form);
 }
 
