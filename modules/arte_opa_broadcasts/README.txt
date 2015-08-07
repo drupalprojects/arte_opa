@@ -40,6 +40,9 @@ An automatic synchronisation of broadcasts data can be set up utilizing the
 fetched from OPA, `hook_arte_opa_broadcast_sync` gets triggered allowing other
 modules to carry out the necessary synchronisation of broadcasts in the system.
 
+The query used for this automatic synchronisation can be altered by modules
+that would like to do so by using `hook_arte_opa_broadcasts_sync_params_alter`.
+
 
 ## Credits
 

@@ -16,3 +16,13 @@ function hook_arte_opa_broadcasts_sync($broadcasts) {
   }
 }
 
+/**
+ * Allow modules to alter the OPA query used by 'drush opa-broadcasts-sync'.
+ *
+ * @param array &$parameters
+ *   An associative array of all the query filters.
+ */
+function hook_arte_opa_broadcasts_sync_params(&$parameters) {
+  // Add some specific filters
+  $parameters['programType'] = 'INTERNET';
+}
