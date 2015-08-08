@@ -56,7 +56,7 @@ function _drush_arte_opa_broadcasts_opa_broadcasts_sync($caseCodes = array(), $d
   }
 
   // Query OPA for upcoming broadcasts and merge the multilingual datasets by program ID
-  $languages = array('de', 'fr');
+  $languages = arte_opa_languages();
   $broadcasts = array();
   foreach ($languages as $lang) {
     // Fetch the broadcasts with program data

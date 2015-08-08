@@ -219,7 +219,7 @@ function _arte_opa_query_table() {
   // We have at least one criterion to match
   if (!($query = _arte_opa_query())) {
     $query = array(
-      'language' => array('fr', 'de'),
+      'language' => arte_opa_languages(),
       'limit' => 10,
       'kind' => 'SHOW',
     );
