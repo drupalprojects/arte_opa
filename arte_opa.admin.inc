@@ -162,14 +162,17 @@ function arte_opa_query_filters() {
     'description' => t('The complete emission number of the video.'),
   );
 
+  require_once DRUPAL_ROOT . '/includes/iso.inc';
+  $predefined = _locale_get_predefined_list();
+  $options = array('all' => t('All languages'));
+  $languages = arte_opa_languages();
+  foreach ($languages as $language) {
+    $options[$language] = reset($predefined[$language]);
+  }
+
   $filters['language'] = array(
     'title' => t('Language'),
-    'options' => array(
-      'all' => t('All languages'),
-      'fr' => t('French'),
-      'de' => t('German'),
-      'en' => t('English'),
-    ),
+    'options' => $options,
   );
 
   $filters['kind'] = array(
@@ -196,15 +199,7 @@ function arte_opa_query_filters() {
 
   $filters['platform'] = array(
     'title' => t('Platform'),
-    'options' => array(
-      'all' => t('All platforms'),
-      'ALW' => t('Concert'),
-      'CINEMA' => t('Cinema'),
-      'ARTEPLUS7' => t('Arte+7'),
-      'CREATIVE' => t('Creative'),
-      'FUTURE' => t('Future'),
-      'INFO' => t('Info'),
-    ),
+    'options' => array('all' => t('All platforms')) + arte_opa_platforms(),
   );
 
   $filters['freeFilters'] = array(
