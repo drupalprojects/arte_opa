@@ -53,12 +53,14 @@ function arte_opa_get_api() {
 function arte_opa_platforms() {
   return array(
     'ALW' => t('Concert'),
-    'CINEMA' => t('Cinema'),
+    'ARTETV' => t('Arte TV'),
     'ARTEPLUS7' => t('Arte+7'),
+    'CINEMA' => t('Cinema'),
     'CREATIVE' => t('Creative'),
     'FUTURE' => t('Future'),
     'INFO' => t('Info'),
     'OPERA' => t('Opera'),
+    'TVGUIDE' => t('TV Guide')
   );
 }
 
