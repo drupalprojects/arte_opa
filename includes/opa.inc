@@ -168,10 +168,23 @@ class OPA {
    */
   protected function apiHttpRequest($path, $params, $method) {
     $url = $this->getApiEndPoint() . $path;
+
     // Add access token to the parameters
     $params['access_token'] = $this->getAccessToken();
     $data = drupal_http_build_query($params);
-    return $this->httpRequest($url, $data, array(), $method);
+
+    // Build the request, including path and headers.
+    $options = array(
+      'method' => $method,
+      'headers' => array(
+        'User-Agent' => variable_get('arte_opa_user_agent', 'Drupal : ' . variable_get('site_name', 'unknown'))
+      ),
+    );
+
+    // Allow other modules to alter query headers.
+    drupal_alter('arte_opa_headers', $options['headers'], $params);
+
+    return $this->httpRequest($url, $data, $options, $method);
   }
 
   /**
@@ -181,21 +194,13 @@ class OPA {
    *   Path to make request from.
    * @param array $data
    *   The request body.
-   * @param array $headers
-   *   Request headers to send as name => value.
-   * @param string $method
-   *   Method to initiate the call, such as GET or POST.  Defaults to GET.
+   * @param array $options
+   *   The request options.
    *
    * @return object
    *   OPA response object.
    */
-  protected function httpRequest($url, $data, $headers = array(), $method = 'GET') {
-    // Build the request, including path and headers. Internal use.
-    $options = array(
-      'method' => $method,
-      'headers' => $headers,
-    );
-
+  protected function httpRequest($url, $data, $options) {
     // Append the parameters directly to the URL
     $url = $url . '?' . $data;
     if ($this->getDebug()) {
