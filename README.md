@@ -7,19 +7,25 @@ The module supports retrieving data using the `videos` method. To retrieve
 `broadcasts` data you need to separately enable the `arte_opa_broadcasts` module.
 More methods will be supported soon.
 
-Open API documentation can be found at https://github.com/ArteGEIE/API-DOC
+Open API documentation can be found at https://api.arte.tv/api/oauth/user/documentation
 
 ## Configuration
 
 You can configure the OPA access settings at /admin/config/services/opa/config.
 
-You can get these keys from ARTE [upon request](https://github.com/ArteGEIE/API-OPA/blob/develop/app/Resources/doc/index.md#how-to-request-access-).
+You can get an acces token from ARTE when subscribing on their API page https://api.arte.tv/api/oauth/user/login
 
 Alternatively, add this snippet to your `settings.php`
 
 ```php
 $conf['arte_opa_client_id'] = 'CLIENT_ID';
 $conf['arte_opa_client_secret'] = 'CLIENT_SECRET';
+```
+
+Or by using the never expire token
+
+```php
+$conf['arte_opa_token_never_expire'] = 'TOKEN';
 ```
 
 Give users the permission 'administer opa' or 'query opa' to change settings and use the query builder respectively.
