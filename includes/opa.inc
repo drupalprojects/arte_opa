@@ -26,6 +26,12 @@ class OPA {
   protected $debug = FALSE;
 
   /**
+   * The URL when contacting OPA
+   * @var string
+   */
+  protected $url = '';
+
+  /**
    * Constructor which initializes the consumer.
    *
    * @param string $client_id
@@ -143,11 +149,26 @@ class OPA {
 
     // Catch and rethrow any errors reported by the API
     if (isset($data['error']) && isset($data['error_description'])) {
-      throw new OPAException($data['error_description']);
+      throw new OPAException($data['error_description'], 0, null, $this->url);
+    }
+
+    if (isset($data['errors']) && isset($data['errors'][0]['title'])) {
+      $code = isset($data['errors'][0]['code']) ? $data['errors'][0]['code'] : 0;
+      $detail = isset($data['errors'][0]['detail']) ? $data['errors'][0]['detail'] : '';
+      $status = isset($data['errors'][0]['status']) ? $data['errors'][0]['status'] : 'N/A';
+
+      $error_msg = t('Failed fetching video !programId for platform !platform. !title, !detail. Status: !status', array('!programId' => $params['programId'], '!title' => $data['errors'][0]['title'], '!platform' => $params['platform'], '!detail' => $detail, '!status' => $status));
+
+      throw new OPAException($error_msg, $code, null, $this->url);
     }
 
     if (!empty($data['errorCode'])) {
-      throw new OPAException($data['message']);
+      throw new OPAException($data['message'], 0, null, $this->url);
+    }
+
+    // Final check, make sure we have received videos
+    if (!isset($data['videos'])) {
+      throw new OPAException(t('Expected attribute "videos" not found in OPA response.', 0, null, $this->url));
     }
 
     return $data;
@@ -212,6 +233,9 @@ class OPA {
         drupal_set_message(t($msg, array('!url' => l($url, $url))), 'info', FALSE);
       }
     }
+
+    // Also add the latest api call to this object so it can be retrieved for logging in a later stage
+    $this->url = $url;
 
     return drupal_http_request($url, $options);
   }
@@ -301,5 +325,25 @@ class OPA {
 
 }
 
+/**
+ * Exception class
+ */
 class OPAException extends Exception {
+
+  private $url;
+
+  public function __construct($message = null, $code = 0, Exception $previous = null, $url = null) {
+    parent::__construct($message, $code, $previous);
+    $this->url = $url;
+  }
+
+  /**
+   * Retrieve the OPA url that caused this exception. Useful for logging.
+   *
+   * @return [type] [description]
+   */
+  public function getUrl() {
+    return $this->url;
+  }
+
 }
