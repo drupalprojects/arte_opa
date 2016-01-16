@@ -62,6 +62,7 @@ function _drush_arte_opa_broadcasts_opa_broadcasts_sync($caseCodes = array(), $d
     // Fetch the broadcasts with program data
     $params = array(
       'language' => $lang,
+      'channel' => strtoupper($lang),
       'case.code' => implode(',', $caseCodes),
       'sort' => 'AIRDATE_ASC',
       // Include program data
