@@ -205,7 +205,7 @@ class OPA {
     // Allow other modules to alter query headers.
     drupal_alter('arte_opa_headers', $options['headers'], $params);
 
-    return $this->httpRequest($url, $data, $options, $method);
+    return $this->httpRequest($url, $data, $options);
   }
 
   /**
@@ -298,7 +298,7 @@ class OPA {
     ));
 
     $url = $this->endpoint . '/api/oauth/' . $this->oAuthVersion . '/token';
-    $response = $this->httpRequest($url, $data);
+    $response = $this->httpRequest($url, $data, array());
 
     $data = drupal_json_decode($response->data);
 
