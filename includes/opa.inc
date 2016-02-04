@@ -168,7 +168,7 @@ class OPA {
 
     // Final check, make sure we have received videos
     if (!isset($data['videos'])) {
-      throw new OPAException(t('Expected attribute "videos" not found in OPA response.', 0, null, $this->url));
+      throw new OPAException(t('Expected attribute "videos" not found in OPA response.'), 0, null, $this->url);
     }
 
     return $data;
