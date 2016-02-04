@@ -166,11 +166,6 @@ class OPA {
       throw new OPAException($data['message'], 0, null, $this->url);
     }
 
-    // Final check, make sure we have received videos
-    if (!isset($data['videos'])) {
-      throw new OPAException(t('Expected attribute "videos" not found in OPA response.'), 0, null, $this->url);
-    }
-
     return $data;
   }
 
@@ -314,13 +309,25 @@ class OPA {
 
   /**
    * Query for the video resources in OPA.
-   * See https://github.com/ArteGEIE/API-DOC/blob/master/OpenAPI/Resources/videos.md
    *
-   * @param  array  $params [description]
-   * @return [type]         [description]
+   * @param array $params
+   *   The OPA query parameters.
+   * @return array
+   *   The OPA data array.
+   *
+   * @throws OPAException
+   *   If videos can't be found in the data.
+   * @see https://api.arte.tv/api/oauth/user/documentation
    */
   public function videos($params = array()) {
-    return $this->apiCall('videos', $params);
+    $data = $this->apiCall('videos', $params);
+
+    // Make sure we have received videos
+    if (!isset($data['videos'])) {
+      throw new OPAException(t('Expected attribute "videos" not found in OPA response.'), 0, null, $this->url);
+    }
+
+    return $data;
   }
 
 }
@@ -340,7 +347,8 @@ class OPAException extends Exception {
   /**
    * Retrieve the OPA url that caused this exception. Useful for logging.
    *
-   * @return [type] [description]
+   * @return string
+   *   The URL that caused the exception.
    */
   public function getUrl() {
     return $this->url;
