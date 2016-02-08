@@ -12,7 +12,7 @@ function arte_opa_admin_settings() {
   $form['opa'] = array(
     '#type' => 'fieldset',
     '#title' => t('OPA connection parameters'),
-    '#description' => t('You will need to request Open API access to ARTE. !info.', array('!info' => l(t('Find out how to get access'), 'https://github.com/ArteGEIE/API-OPA/blob/develop/app/Resources/doc/index.md#how-to-request-access-).'))),
+    '#description' => t('You will need to request Open API access to ARTE. !info.', array('!info' => l(t('Find out how to get access'), 'https://api.arte.tv/api/oauth/user/documentation'))),
   );
   $form['opa']['arte_opa_client_id'] = array(
     '#type' => 'textfield',
