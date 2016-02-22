@@ -123,11 +123,19 @@ class OPA {
         // Rebuild our request and repeat request.
         $this->response = $this->apiHttpRequest($path, $params, $method);
         // Throw an error if we still have bad response.
-        if (!in_array($this->response->code, array(200, 201, 204))) {
+        if (!in_array($this->response->code, array(200, 201, 204, 404))) {
           throw new OPAException($this->response->error, $this->response->code);
         }
 
         break;
+
+      case 404:
+        // There is no data to show
+        $data = array();
+
+        // Log the error in watchdog, but gracefully continue
+        watchdog('arte_opa', 'Could not fetch data for path "!path". Error message from OPA: !msg', array('!path' => $path, '!msg' => $this->response->error), WATCHDOG_WARNING);
+        return $data;
 
       case 200:
       case 201:
