@@ -4,6 +4,8 @@
  * Objects, properties, and methods to communicate with the ARTE Open API
  */
 
+define("ARTE_OPA_DEFAULT_VERSION", "v2");
+
 /**
  * Ability to authorize and communicate with the ARTE Open API.
  */
@@ -29,7 +31,7 @@ class OPA {
    * API version to use in endpoint URL.
    * @var string
    */
-  protected $api_version = 'v2';
+  protected $api_version = ARTE_OPA_DEFAULT_VERSION;
 
   /**
    * The URL when contacting OPA
@@ -50,7 +52,7 @@ class OPA {
    * @param string $api_version (optional)
    *   API version string to use as part of the endpoint URL.
    */
-  public function __construct($client_id, $client_secret, $token_never_expire = FALSE, $api_version = 'v2') {
+  public function __construct($client_id, $client_secret, $token_never_expire = FALSE, $api_version = ARTE_OPA_DEFAULT_VERSION) {
     $this->client_id = $client_id;
     $this->client_secret = $client_secret;
     $this->token_never_expire = $token_never_expire;
