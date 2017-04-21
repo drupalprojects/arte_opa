@@ -39,7 +39,7 @@ function arte_opa_menu() {
  * @return OPA
  *   Returns an OPA class object.
  */
-function arte_opa_get_api($api_version = 'v2') {
+function arte_opa_get_api($api_version = ARTE_OPA_DEFAULT_VERSION) {
   return new OPA(
     variable_get('arte_opa_client_id', ''),
     variable_get('arte_opa_client_secret', ''),
