@@ -1,5 +1,7 @@
 <?php
 
+define("ARTE_OPA_DEFAULT_VERSION", "v2");
+
 /**
  * Implements hook_menu().
  */

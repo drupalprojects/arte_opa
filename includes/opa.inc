@@ -4,8 +4,6 @@
  * Objects, properties, and methods to communicate with the ARTE Open API
  */
 
-define("ARTE_OPA_DEFAULT_VERSION", "v2");
-
 /**
  * Ability to authorize and communicate with the ARTE Open API.
  */
