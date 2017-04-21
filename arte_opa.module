@@ -1,5 +1,7 @@
 <?php
 
+define("ARTE_OPA_DEFAULT_VERSION", "v2");
+
 /**
  * Implements hook_menu().
  */
@@ -37,11 +39,12 @@ function arte_opa_menu() {
  * @return OPA
  *   Returns an OPA class object.
  */
-function arte_opa_get_api() {
+function arte_opa_get_api($api_version = ARTE_OPA_DEFAULT_VERSION) {
   return new OPA(
     variable_get('arte_opa_client_id', ''),
     variable_get('arte_opa_client_secret', ''),
-    variable_get('arte_opa_token_never_expire', FALSE)
+    variable_get('arte_opa_token_never_expire', FALSE),
+    $api_version
   );
 }
 

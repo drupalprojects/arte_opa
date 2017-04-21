@@ -26,6 +26,12 @@ class OPA {
   protected $debug = FALSE;
 
   /**
+   * API version to use in endpoint URL.
+   * @var string
+   */
+  protected $api_version = ARTE_OPA_DEFAULT_VERSION;
+
+  /**
    * The URL when contacting OPA
    * @var string
    */
@@ -41,11 +47,14 @@ class OPA {
    * @param string $token_never_expire (optional)
    *   ARTE auth token that never expires. Can be used to skip the roundtrip to fetch
    *   a valid token.
+   * @param string $api_version (optional)
+   *   API version string to use as part of the endpoint URL.
    */
-  public function __construct($client_id, $client_secret, $token_never_expire = FALSE) {
+  public function __construct($client_id, $client_secret, $token_never_expire = FALSE, $api_version = ARTE_OPA_DEFAULT_VERSION) {
     $this->client_id = $client_id;
     $this->client_secret = $client_secret;
     $this->token_never_expire = $token_never_expire;
+    $this->api_version = $api_version;
 
     // Set the token that should never expire.
     if ($this->token_never_expire) {
@@ -250,7 +259,7 @@ class OPA {
    *   Complete URL endpoint for API access.
    */
   public function getApiEndPoint() {
-    return $this->endpoint . '/api/opa/v2/';
+    return $this->endpoint . '/api/opa/' . $this->api_version . '/';
   }
 
   /**

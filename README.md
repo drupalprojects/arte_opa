@@ -45,8 +45,8 @@ This module defines a PHP iterator class to iterate over remote resources such a
 For example, to fetch all ARTEPLUS7 videos, you can use the following code.
 
 ```php
-// Create the OPA connector. Make sure you have your OPA settings correctly set.
-$opa = arte_opa_get_api();
+// Create the OPA connector. Make sure you have your OPA settings correctly set. We are passing the optional api_version parameter to the function.
+$opa = arte_opa_get_api('v2');
 
 // Create a video reader to iterate over remote videos. We also pass it the query parameters (platform, language and channel).
 $reader = new OPAVideosReader($opa, array(
